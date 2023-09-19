@@ -1,0 +1,43 @@
+# Node.js dependencies
+/node_modules
+
+# NestJS build output
+/dist
+
+# SQLite database file
+*.sqlite
+
+# .env file (local environment configuration)
+.env
+
+# Log files
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# macOS specific files
+.DS_Store
+
+# Test coverage reports
+/coverage
+/.nyc_output
+
+# IDE-specific files and directories
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VSCode-specific files and directories
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
