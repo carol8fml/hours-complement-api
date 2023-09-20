@@ -22,6 +22,9 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 
+/** dto */
+import { CreateUserDto } from 'src/dto/user.dto';
+
 @Controller('users')
 /** Tag para a documentação */
 @ApiTags('users')
@@ -31,7 +34,7 @@ export class UserController {
   @Post()
   @ApiOperation({ summary: 'Cria um novo usuário' })
   @ApiResponse({ status: 201, description: 'O usuário foi criado', type: User })
-  @ApiBody({ type: User })
+  @ApiBody({ type: CreateUserDto })
   create(@Body() user: User): User {
     return this.userService.create(user);
   }

@@ -22,6 +22,9 @@ import { DimensionService } from '../services/dimension.service';
 /** Entities */
 import { Dimension } from '../entities/dimension.entity';
 
+/** dto */
+import { CreateDimensionDto } from 'src/dto/dimensions.dto';
+
 @Controller('dimensions')
 @ApiTags('dimensions')
 export class DimensionController {
@@ -38,7 +41,7 @@ export class DimensionController {
     description: 'A dimensão foi criada',
     type: Dimension,
   })
-  @ApiBody({ type: Dimension })
+  @ApiBody({ type: CreateDimensionDto })
   create(@Body() dimension: Dimension): Dimension {
     return this.dimensionService.create(dimension);
   }

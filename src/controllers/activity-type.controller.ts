@@ -22,6 +22,9 @@ import { ActivityTypeService } from '../services/activity-type.service';
 /** Entities */
 import { ActivityType } from '../entities/activity-type.entity';
 
+/** dto */
+import { CreateActivityTypeDto } from 'src/dto/activity-type.dto';
+
 @Controller('activity-types')
 /** Tag para a documentação */
 @ApiTags('activity-types')
@@ -34,7 +37,7 @@ export class ActivityTypeController {
    */
   @Post()
   @ApiOperation({ summary: 'Cria um novo tipo de atividade' })
-  @ApiBody({ type: ActivityType })
+  @ApiBody({ type: CreateActivityTypeDto })
   @ApiResponse({
     status: 201,
     description: 'O tipo de atividade foi criado',
