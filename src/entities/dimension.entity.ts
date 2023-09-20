@@ -1,5 +1,8 @@
 /** Libs */
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+
+/** Entities */
+import { ActivityType } from './activity-type.entity';
 
 @Entity()
 export class Dimension {
@@ -24,5 +27,14 @@ export class Dimension {
    * * Número inteiro
    */
   @Column({ type: 'integer', nullable: false })
-  hoursLimit: number;
+  limitHours: number;
+
+  /**
+   * Tipos de atividades relacionados a esta dimensão.
+   *
+   * **Requisitos:**
+   * * Relacionamento com a entidade ActivityType
+   */
+  @OneToMany(() => ActivityType, (activityType) => activityType.dimension)
+  activityTypes: ActivityType[];
 }
