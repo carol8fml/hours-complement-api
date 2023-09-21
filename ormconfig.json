@@ -1,0 +1,6 @@
+{
+  "type": "sqlite",
+  "database": "${DB_NAME",
+  "entities": ["${DB_ENTITIES}"],
+  "synchronize": true
+}

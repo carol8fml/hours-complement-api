@@ -9,11 +9,6 @@ import {
   Body,
 } from '@nestjs/common';
 
-/** Services */
-import { UserService } from '../services/user.service';
-
-/** Entities */
-import { User } from '../entities/user.entity';
 import {
   ApiTags,
   ApiOperation,
@@ -22,7 +17,13 @@ import {
   ApiBody,
 } from '@nestjs/swagger';
 
-/** dto */
+/** Services */
+import { UserService } from '../services/user.service';
+
+/** Entities */
+import { User } from '../entities/user.entity';
+
+/** Dto */
 import { CreateUserDto } from 'src/dto/user.dto';
 
 @Controller('users')
@@ -35,8 +36,8 @@ export class UserController {
   @ApiOperation({ summary: 'Cria um novo usuário' })
   @ApiResponse({ status: 201, description: 'O usuário foi criado', type: User })
   @ApiBody({ type: CreateUserDto })
-  create(@Body() user: User): User {
-    return this.userService.create(user);
+  async create(@Body() user: User): Promise<User> {
+    return await this.userService.create(user);
   }
 
   @Get()
@@ -47,8 +48,7 @@ export class UserController {
     type: [User],
   })
   async findAll(): Promise<User[]> {
-    const users = await this.userService.findAll();
-    return users.map((user) => ({ ...user, id: user.id }));
+    return await this.userService.findAll();
   }
 
   @Get(':id')
@@ -57,8 +57,8 @@ export class UserController {
   @ApiParam({ name: 'id', type: Number })
   @ApiResponse({ status: 200, description: 'Usuário encontrado', type: User })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
-  findOne(@Param('id') id: string): User | undefined {
-    return this.userService.findOne(Number(id));
+  async findOne(@Param('id') id: string): Promise<User | undefined> {
+    return await this.userService.findOne(Number(id));
   }
 
   @Put(':id')
@@ -71,8 +71,11 @@ export class UserController {
     type: User,
   })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
-  update(@Param('id') id: string, @Body() user: User): User | undefined {
-    return this.userService.update(Number(id), user);
+  async update(
+    @Param('id') id: string,
+    @Body() user: User,
+  ): Promise<User | undefined> {
+    return await this.userService.update(Number(id), user);
   }
 
   @Delete(':id')
@@ -80,7 +83,7 @@ export class UserController {
   @ApiParam({ name: 'id', type: Number })
   @ApiResponse({ status: 204, description: 'O usuário foi removido' })
   @ApiResponse({ status: 404, description: 'Usuário não encontrado' })
-  remove(@Param('id') id: string): void {
-    this.userService.remove(Number(id));
+  async remove(@Param('id') id: string): Promise<void> {
+    await this.userService.remove(Number(id));
   }
 }
