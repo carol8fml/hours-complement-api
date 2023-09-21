@@ -22,7 +22,7 @@ import { ActivityTypeService } from '../services/activity-type.service';
 /** Entities */
 import { ActivityType } from '../entities/activity-type.entity';
 
-/** dto */
+/** DTO */
 import { CreateActivityTypeDto } from 'src/dto/activity-type.dto';
 
 @Controller('activity-types')
@@ -43,8 +43,8 @@ export class ActivityTypeController {
     description: 'O tipo de atividade foi criado',
     type: ActivityType,
   })
-  criar(@Body() activityType: ActivityType): ActivityType {
-    return this.activityTypeService.create(activityType);
+  async create(@Body() activityType: ActivityType): Promise<ActivityType> {
+    return await this.activityTypeService.create(activityType);
   }
 
   /**
@@ -57,8 +57,8 @@ export class ActivityTypeController {
     description: 'Tipos de atividade encontrados',
     type: [ActivityType],
   })
-  listarTodos(): ActivityType[] {
-    return this.activityTypeService.findAll();
+  async findAll(): Promise<ActivityType[]> {
+    return await this.activityTypeService.findAll();
   }
 
   /**
@@ -73,8 +73,8 @@ export class ActivityTypeController {
     description: 'Tipo de atividade encontrado',
     type: ActivityType,
   })
-  buscarUm(@Param('id') id: string): ActivityType | undefined {
-    return this.activityTypeService.findOne(Number(id));
+  async findOne(@Param('id') id: string): Promise<ActivityType | undefined> {
+    return await this.activityTypeService.findOne(Number(id));
   }
 
   /**
@@ -91,11 +91,11 @@ export class ActivityTypeController {
     description: 'O tipo de atividade foi atualizado',
     type: ActivityType,
   })
-  atualizar(
+  async update(
     @Param('id') id: string,
     @Body() activityType: ActivityType,
-  ): ActivityType | undefined {
-    return this.activityTypeService.update(Number(id), activityType);
+  ): Promise<ActivityType | undefined> {
+    return await this.activityTypeService.update(Number(id), activityType);
   }
 
   /**
@@ -109,7 +109,7 @@ export class ActivityTypeController {
     status: 204,
     description: 'O tipo de atividade foi removido',
   })
-  remover(@Param('id') id: string): void {
+  remove(@Param('id') id: string): void {
     this.activityTypeService.remove(Number(id));
   }
 }

@@ -1,64 +1,59 @@
 /** Libs */
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 /** Entities */
 import { Dimension } from '../entities/dimension.entity';
 
 @Injectable()
 export class DimensionService {
-  private dimensions: Dimension[] = [];
-  private currentId = 1;
+  constructor(
+    @InjectRepository(Dimension)
+    private readonly dimensionRepository: Repository<Dimension>,
+  ) {}
 
   /**
    * Cria uma nova dimensão.
    * @param dimension A dimensão a ser criada.
    */
-  create(dimension: Dimension): Dimension {
-    dimension.id = this.currentId++;
-    this.dimensions.push(dimension);
-    return dimension;
+  async create(dimension: Dimension): Promise<Dimension> {
+    return await this.dimensionRepository.save(dimension);
   }
 
   /**
    * Retorna todas as dimensões cadastradas.
-   * @returns Uma lista de dimensões cadastradas.
    */
-  findAll(): Dimension[] {
-    return this.dimensions;
+  async findAll(): Promise<Dimension[]> {
+    return await this.dimensionRepository.find();
   }
 
   /**
    * Retorna uma dimensão com base em seu ID.
    * @param id O ID da dimensão a ser retornada.
    */
-  findOne(id: number): Dimension | undefined {
-    return this.dimensions.find((dim) => dim.id === id);
+  async findOne(id: number): Promise<Dimension | undefined> {
+    return await this.dimensionRepository.findOne({ where: { id } });
   }
 
   /**
    * Atualiza uma dimensão existente.
-   *
    * @param id O ID da dimensão a ser atualizada.
    * @param dimension A dimensão atualizada.
    */
-  update(id: number, dimension: Dimension): Dimension | undefined {
-    const index = this.dimensions.findIndex((dim) => dim.id === id);
-    if (index !== -1) {
-      dimension.id = id;
-      this.dimensions[index] = dimension;
-      return dimension;
-    }
-    return undefined;
+  async update(
+    id: number,
+    dimension: Dimension,
+  ): Promise<Dimension | undefined> {
+    await this.dimensionRepository.update(id, dimension);
+    return await this.dimensionRepository.findOne({ where: { id } });
   }
 
   /**
    * Remove uma dimensão com base em seu ID.
    * @param id O ID da dimensão a ser removida.
    */
-  remove(id: number): void {
-    const index = this.dimensions.findIndex((dim) => dim.id === id);
-    if (index !== -1) {
-      this.dimensions.splice(index, 1);
-    }
+  async remove(id: number): Promise<void> {
+    await this.dimensionRepository.delete(id);
   }
 }

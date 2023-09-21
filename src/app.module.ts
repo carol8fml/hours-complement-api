@@ -14,6 +14,8 @@ import { ActivityTypeController } from './controllers/activity-type.controller';
 
 /** Entities */
 import { User } from './entities/user.entity';
+import { Dimension } from './entities/dimension.entity';
+import { ActivityType } from './entities/activity-type.entity';
 
 /** Database */
 import databaseConfig from 'database.config';
@@ -21,7 +23,7 @@ import databaseConfig from 'database.config';
 @Module({
   imports: [
     TypeOrmModule.forRoot(databaseConfig),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Dimension, ActivityType]),
   ],
   controllers: [UserController, DimensionController, ActivityTypeController],
   providers: [UserService, DimensionService, ActivityTypeService],

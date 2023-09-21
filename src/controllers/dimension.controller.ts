@@ -22,10 +22,11 @@ import { DimensionService } from '../services/dimension.service';
 /** Entities */
 import { Dimension } from '../entities/dimension.entity';
 
-/** dto */
+/** DTO */
 import { CreateDimensionDto } from 'src/dto/dimensions.dto';
 
 @Controller('dimensions')
+/** Tag para a documentação */
 @ApiTags('dimensions')
 export class DimensionController {
   constructor(private readonly dimensionService: DimensionService) {}
@@ -42,8 +43,8 @@ export class DimensionController {
     type: Dimension,
   })
   @ApiBody({ type: CreateDimensionDto })
-  create(@Body() dimension: Dimension): Dimension {
-    return this.dimensionService.create(dimension);
+  async create(@Body() dimension: Dimension): Promise<Dimension> {
+    return await this.dimensionService.create(dimension);
   }
 
   /**
@@ -56,8 +57,8 @@ export class DimensionController {
     description: 'Dimensões encontradas',
     type: [Dimension],
   })
-  findAll(): Dimension[] {
-    return this.dimensionService.findAll();
+  async findAll(): Promise<Dimension[]> {
+    return await this.dimensionService.findAll();
   }
 
   /**
@@ -73,8 +74,8 @@ export class DimensionController {
     type: Dimension,
   })
   @ApiResponse({ status: 404, description: 'Dimensão não encontrada' })
-  findOne(@Param('id') id: string): Dimension | undefined {
-    return this.dimensionService.findOne(Number(id));
+  async findOne(@Param('id') id: string): Promise<Dimension | undefined> {
+    return await this.dimensionService.findOne(Number(id));
   }
 
   /**
@@ -92,11 +93,11 @@ export class DimensionController {
     type: Dimension,
   })
   @ApiResponse({ status: 404, description: 'Dimensão não encontrada' })
-  update(
+  async update(
     @Param('id') id: string,
     @Body() dimension: Dimension,
-  ): Dimension | undefined {
-    return this.dimensionService.update(Number(id), dimension);
+  ): Promise<Dimension | undefined> {
+    return await this.dimensionService.update(Number(id), dimension);
   }
 
   /**

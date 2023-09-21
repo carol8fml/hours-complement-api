@@ -23,7 +23,7 @@ import { UserService } from '../services/user.service';
 /** Entities */
 import { User } from '../entities/user.entity';
 
-/** Dto */
+/** DTO */
 import { CreateUserDto } from 'src/dto/user.dto';
 
 @Controller('users')

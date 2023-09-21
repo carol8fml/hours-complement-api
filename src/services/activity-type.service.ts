@@ -1,37 +1,39 @@
 /** Libs */
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 /** Entities */
 import { ActivityType } from '../entities/activity-type.entity';
 
 @Injectable()
 export class ActivityTypeService {
-  private activityTypes: ActivityType[] = [];
-  private currentId = 1;
+  constructor(
+    @InjectRepository(ActivityType)
+    private readonly activityTypeRepository: Repository<ActivityType>,
+  ) {}
 
   /**
    * Cria um novo tipo de atividade.
    * @param activityType O tipo de atividade a ser criado.
    */
-  create(activityType: ActivityType): ActivityType {
-    activityType.id = this.currentId++;
-    this.activityTypes.push(activityType);
-    return activityType;
+  async create(activityType: ActivityType): Promise<ActivityType> {
+    return await this.activityTypeRepository.save(activityType);
   }
 
   /**
    * Retorna todos os tipos de atividade cadastrados.
    */
-  findAll(): ActivityType[] {
-    return this.activityTypes;
+  async findAll(): Promise<ActivityType[]> {
+    return await this.activityTypeRepository.find();
   }
 
   /**
    * Retorna um tipo de atividade com base em seu ID.
    * @param id O ID do tipo de atividade a ser retornado.
    */
-  findOne(id: number): ActivityType | undefined {
-    return this.activityTypes.find((activityType) => activityType.id === id);
+  async findOne(id: number): Promise<ActivityType | undefined> {
+    return await this.activityTypeRepository.findOne({ where: { id } });
   }
 
   /**
@@ -39,26 +41,19 @@ export class ActivityTypeService {
    * @param id O ID do tipo de atividade a ser atualizado.
    * @param activityType O tipo de atividade atualizado.
    */
-  update(id: number, activityType: ActivityType): ActivityType | undefined {
-    const index = this.activityTypes.findIndex((at) => at.id === id);
-    if (index !== -1) {
-      activityType.id = id;
-      this.activityTypes[index] = activityType;
-      return activityType;
-    }
-    return undefined;
+  async update(
+    id: number,
+    activityType: ActivityType,
+  ): Promise<ActivityType | undefined> {
+    await this.activityTypeRepository.update(id, activityType);
+    return await this.activityTypeRepository.findOne({ where: { id } });
   }
 
   /**
    * Remove um tipo de atividade com base em seu ID.
    * @param id O ID do tipo de atividade a ser removido.
    */
-  remove(id: number): void {
-    const index = this.activityTypes.findIndex(
-      (activityType) => activityType.id === id,
-    );
-    if (index !== -1) {
-      this.activityTypes.splice(index, 1);
-    }
+  async remove(id: number): Promise<void> {
+    await this.activityTypeRepository.delete(id);
   }
 }
